@@ -1,8 +1,34 @@
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import { About, Home, Login, OurProduct, Register } from './pages';
+import { Navbar } from './components';
+
 const App = () => {
   return (
-    <div className="m-12">
-      <h1 className="text-blue-600 text-3xl">Lorem ipsum !</h1>
-    </div>
+    <BrowserRouter>
+      <Navbar />
+      <Routes>
+        <Route
+          path="/login"
+          element={<Login />}
+        />
+        <Route
+          path="/register"
+          element={<Register />}
+        />
+        <Route
+          path="/"
+          element={<Home />}
+        />
+        <Route
+          path="/our-product"
+          element={<OurProduct />}
+        />
+        <Route
+          path="/about"
+          element={<About />}
+        />
+      </Routes>
+    </BrowserRouter>
   );
 };
 
