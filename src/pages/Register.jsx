@@ -51,7 +51,7 @@ const Register = () => {
   return (
     <div className="max-w-lg mx-auto p-3">
       <h1 className="text-3xl text-center font-semibold uppercase my-7">
-        user registration
+        registration
       </h1>
       {error && <small className="text-red-500">{error}</small>}
       <form
@@ -83,13 +83,13 @@ const Register = () => {
           className="bg-slate-700 text-white rounded-lg p-3 disabled:opacity-80"
           disabled={loading}
         >
-          {loading ? 'Loading...' : 'Register'}
+          {loading ? 'Loading...' : 'REGISTER'}
         </button>
       </form>
       <div className="flex gap-2">
         <p>Have an account?</p>
         <Link to="/login">
-          <span className="text-blue-600">Login </span>
+          <span className="text-blue-600 up">login </span>
           <span>here!</span>
         </Link>
       </div>
