@@ -1,12 +1,16 @@
 import { useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
+import { loginFailure, loginStart, loginSuccess } from '../redux/UserSlice';
 
 const Login = () => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const [formData, setFormData] = useState({});
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
+  // const [loading, setLoading] = useState(false);
+  // const [error, setError] = useState(null);
+  const { loading, error } = useSelector((state) => state.user);
 
   const handleChange = (e) => {
     setFormData({
@@ -25,23 +29,27 @@ const Login = () => {
     };
 
     try {
+      dispatch(loginStart());
+
       const response = await fetch(apiUrl, {
         method: 'POST',
         headers: headers,
         body: JSON.stringify(formData),
-      }).then(setLoading(true));
+      });
 
       const data = await response.json();
 
       if (!response.ok) {
-        throw new Error(data.errors);
+        // throw new Error(data.errors);
+        dispatch(loginFailure(data.errors));
+        return;
       }
 
+      dispatch(loginSuccess(data));
       navigate('/');
     } catch (err) {
-      setError(err.message);
-    } finally {
-      setLoading(false);
+      // setError(err.message);
+      dispatch(loginFailure(err.message));
     }
   };
 

@@ -28,11 +28,13 @@ const Register = () => {
     };
 
     try {
+      setLoading(true);
+
       const response = await fetch(apiUrl, {
         method: 'POST',
         headers: headers,
         body: JSON.stringify(formData),
-      }).then(setLoading(true));
+      });
 
       const data = await response.json();
 
