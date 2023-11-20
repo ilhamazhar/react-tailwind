@@ -1,6 +1,6 @@
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
-import { About, Home, Login, OurProduct, Register } from './pages';
-import { Navbar } from './components';
+import { About, Home, Login, OurProduct, Profile, Register } from './pages';
+import { Navbar, PrivateRoute } from './components';
 
 const App = () => {
   return (
@@ -27,6 +27,12 @@ const App = () => {
           path="/about"
           element={<About />}
         />
+        <Route element={<PrivateRoute />}>
+          <Route
+            path="/profile"
+            element={<Profile />}
+          />
+        </Route>
       </Routes>
     </BrowserRouter>
   );

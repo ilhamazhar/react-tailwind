@@ -1,4 +1,5 @@
 import { FaSearch } from 'react-icons/fa';
+import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 
 const menus = [
@@ -8,6 +9,7 @@ const menus = [
 ];
 
 const Navbar = () => {
+  const { currentUser } = useSelector((state) => state.user);
   return (
     <header className="bg-slate-200 shadow-md">
       <div className="max-w-6xl flex justify-between items-center mx-auto p-3">
@@ -35,11 +37,20 @@ const Navbar = () => {
             </li>
           ))}
         </ul>
-        <Link
-          to="login"
-          className="bg-slate-900 hover:bg-slate-700 text-white hover:opacity-90 rounded-lg px-3 py-1.5"
-        >
-          Login
+        <Link to="/profile">
+          {currentUser ? (
+            <div className="flex items-center gap-3">
+              <img
+                className="h-8 w-8 object-cover rounded-full"
+                src={currentUser.photo}
+                title={currentUser.name}
+              />
+            </div>
+          ) : (
+            <button className="bg-slate-900 hover:bg-slate-700 text-white hover:opacity-90 rounded-lg px-3 py-1.5">
+              Login
+            </button>
+          )}
         </Link>
       </div>
     </header>

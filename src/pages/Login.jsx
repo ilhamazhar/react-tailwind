@@ -94,7 +94,7 @@ const Login = () => {
               fill="white"
             />
           </svg>
-          <span>{loading ? 'Loading...' : 'Login here'}</span>
+          <span>{loading ? 'Loading...' : 'LOGIN'}</span>
         </button>
         <OAuth />
       </form>
