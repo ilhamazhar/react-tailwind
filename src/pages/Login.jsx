@@ -45,7 +45,7 @@ const Login = () => {
         dispatch(loginFailure(data.errors));
         return;
       }
-
+      console.log(data);
       dispatch(loginSuccess(data));
       navigate('/');
     } catch (err) {

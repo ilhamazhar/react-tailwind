@@ -36,7 +36,6 @@ const OAuth = () => {
       navigate('/');
     } catch (err) {
       dispatch(loginFailure(err.message));
-      console.log(`Couldn't login with Google. ${err}`);
     }
   };
 

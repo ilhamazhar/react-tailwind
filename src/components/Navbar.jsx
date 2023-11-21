@@ -27,31 +27,35 @@ const Navbar = () => {
           />
           <FaSearch className="text-slate-400" />
         </form>
-        <ul className="flex gap-4">
-          {menus.map((menu) => (
-            <li
-              key={menu.name}
-              className="hidden sm:inline text-slate-700 hover:underline"
-            >
-              <Link to={menu.url}>{menu.name}</Link>
-            </li>
-          ))}
-        </ul>
-        <Link to="/profile">
-          {currentUser ? (
-            <div className="flex items-center gap-3">
-              <img
-                className="h-8 w-8 object-cover rounded-full"
-                src={currentUser.photo}
-                title={currentUser.name}
-              />
-            </div>
-          ) : (
+        {currentUser ? (
+          <>
+            <ul className="flex gap-4">
+              {menus.map((menu) => (
+                <li
+                  key={menu.name}
+                  className="hidden sm:inline text-slate-700 hover:underline"
+                >
+                  <Link to={menu.url}>{menu.name}</Link>
+                </li>
+              ))}
+            </ul>
+            <Link to="/profile">
+              <div className="flex items-center gap-3">
+                <img
+                  className="h-8 w-8 object-cover rounded-full"
+                  src={currentUser.photo}
+                  title={currentUser.name}
+                />
+              </div>
+            </Link>
+          </>
+        ) : (
+          <Link to="/login">
             <button className="bg-slate-900 hover:bg-slate-700 text-white hover:opacity-90 rounded-lg px-3 py-1.5">
               Login
             </button>
-          )}
-        </Link>
+          </Link>
+        )}
       </div>
     </header>
   );
