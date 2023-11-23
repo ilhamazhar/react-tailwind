@@ -1,9 +1,7 @@
 import { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 const Register = () => {
-  const navigate = useNavigate();
-
   const [formData, setFormData] = useState({});
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -19,11 +17,7 @@ const Register = () => {
     e.preventDefault();
 
     const apiUrl = '/api/users';
-    const token =
-      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiRDNsNG1ldDQiLCJyb2xlIjoic3VwZXItYWRtaW4ifSwiaWF0IjoxNzAwMjI2ODUyLCJleHAiOjE3MDAzMTMyNTJ9.IhZfPI20b8saekqN4alzYlDT6glnxQZVUAT4fAV-VqM';
-
     const headers = {
-      Authorization: `Bearer ${token}`,
       'Content-Type': 'application/json',
     };
 
@@ -41,8 +35,6 @@ const Register = () => {
       if (!response.ok) {
         throw new Error(data.errors);
       }
-
-      navigate('/login');
     } catch (err) {
       setError(err.message);
     } finally {
@@ -51,8 +43,8 @@ const Register = () => {
   };
 
   return (
-    <div className="max-w-lg mx-auto p-3">
-      <h1 className="text-3xl text-center font-semibold uppercase my-7">
+    <div className="max-w-lg mx-auto">
+      <h1 className="text-3xl text-center font-semibold uppercase mb-7">
         registration
       </h1>
       {error && <small className="text-red-500">{error}</small>}

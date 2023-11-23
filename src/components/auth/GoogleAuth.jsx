@@ -1,10 +1,10 @@
 import { GoogleAuthProvider, getAuth, signInWithPopup } from 'firebase/auth';
-import { app } from '../firebase';
-import { loginFailure, loginSuccess } from '../redux/UserSlice';
+import { app } from '../../firebase';
+import { loginFailure, loginSuccess } from '../../redux/AuthSlice';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 
-const OAuth = () => {
+const GoogleAuth = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
@@ -56,4 +56,4 @@ const OAuth = () => {
   );
 };
 
-export default OAuth;
+export default GoogleAuth;

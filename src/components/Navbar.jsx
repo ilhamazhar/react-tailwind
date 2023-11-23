@@ -5,11 +5,11 @@ import { Link } from 'react-router-dom';
 const menus = [
   { name: 'Home', url: '/' },
   { name: 'Our Product', url: '/our-product' },
-  { name: 'About', url: '/about' },
+  { name: 'Users', url: '/users' },
 ];
 
 const Navbar = () => {
-  const { currentUser } = useSelector((state) => state.user);
+  const { currentUser } = useSelector((state) => state.auth);
   return (
     <header className="bg-slate-200 shadow-md">
       <div className="max-w-6xl flex justify-between items-center mx-auto p-3">

@@ -1,17 +1,24 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
-import { loginFailure, loginStart, loginSuccess } from '../redux/UserSlice';
-import { OAuth } from '../components';
+import { loginFailure, loginStart, loginSuccess } from '../redux/AuthSlice';
+import { GoogleAuth } from '../components';
 
 const Login = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
   const [formData, setFormData] = useState({});
-  // const [loading, setLoading] = useState(false);
-  // const [error, setError] = useState(null);
-  const { loading, error } = useSelector((state) => state.user);
+  const { loading, error } = useSelector((state) => state.auth);
+
+  useEffect(() => {
+    if (error) {
+      const timer = setTimeout(() => {
+        dispatch(loginFailure(error.message));
+      }, 3500);
+      return () => clearTimeout(timer);
+    }
+  }, [dispatch, error]);
 
   const handleChange = (e) => {
     setFormData({
@@ -24,7 +31,6 @@ const Login = () => {
     e.preventDefault();
 
     const apiUrl = '/api/auth/login';
-
     const headers = {
       'Content-Type': 'application/json',
     };
@@ -41,15 +47,13 @@ const Login = () => {
       const data = await response.json();
 
       if (!response.ok) {
-        // throw new Error(data.errors);
         dispatch(loginFailure(data.errors));
         return;
       }
-      console.log(data);
+
       dispatch(loginSuccess(data));
       navigate('/');
     } catch (err) {
-      // setError(err.message);
       dispatch(loginFailure(err.message));
     }
   };
@@ -59,7 +63,9 @@ const Login = () => {
       <h1 className="text-3xl text-center font-semibold uppercase my-7">
         login
       </h1>
+
       {error && <small className="text-red-500">{error}</small>}
+
       <form
         className="flex flex-col gap-3"
         onSubmit={handleSubmit}
@@ -96,7 +102,7 @@ const Login = () => {
           </svg>
           <span>{loading ? 'Loading...' : 'LOGIN'}</span>
         </button>
-        <OAuth />
+        <GoogleAuth />
       </form>
       <div className="flex gap-2 justify-center mt-3">
         <p>Don&apos;t have an account?</p>

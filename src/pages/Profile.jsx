@@ -8,18 +8,19 @@ import {
 } from 'firebase/storage';
 import { app } from '../firebase';
 import {
-  logoutFailure,
-  logoutStart,
-  logoutSuccess,
+  deleteUserFailure,
+  deleteUserStart,
+  deleteUserSuccess,
   updateUserFailure,
   updateUserStart,
   updateUserSuccess,
 } from '../redux/UserSlice';
+import { Logout } from '../components';
 
 const Profile = () => {
   const dispatch = useDispatch();
   const fileRef = useRef(null);
-  const { currentUser, loading, error } = useSelector((state) => state.user);
+  const { currentUser, loading, error } = useSelector((state) => state.auth);
 
   const [formData, setFormData] = useState({});
   const [file, setFile] = useState(undefined);
@@ -80,7 +81,6 @@ const Profile = () => {
     e.preventDefault();
 
     const apiUrl = '/api/users/current';
-
     const headers = {
       'Content-Type': 'application/json',
     };
@@ -108,32 +108,32 @@ const Profile = () => {
     }
   };
 
-  const handleLogout = async () => {
-    const apiUrl = '/api/auth/logout';
+  const handleDelete = async () => {
+    const apiUrl = '/api/users/current';
 
     try {
-      dispatch(logoutStart());
+      dispatch(deleteUserStart());
 
       const response = await fetch(apiUrl, {
-        method: 'GET',
+        method: 'DELETE',
       });
 
       const data = await response.json();
 
       if (!response.ok) {
-        dispatch(logoutFailure(data.errors));
+        dispatch(deleteUserFailure(data.errors));
         return;
       }
 
-      dispatch(logoutSuccess(data));
+      dispatch(deleteUserSuccess(data));
     } catch (err) {
-      dispatch(logoutFailure(err.message));
+      dispatch(deleteUserFailure(err.message));
     }
   };
 
   return (
-    <div className="max-w-lg mx-auto p-3">
-      <h1 className="text-3xl font-semibold text-center my-7">Profile</h1>
+    <div className="max-w-lg mx-auto">
+      <h1 className="text-3xl font-semibold text-center uppercase">Profile</h1>
       <form
         className="flex flex-col gap-3"
         onSubmit={handleSubmit}
@@ -157,7 +157,7 @@ const Profile = () => {
         </p>
 
         {error && <small className="text-red-500">{error}</small>}
-        {success && <small className="text-green-500">Update saved</small>}
+        {success && <small className="text-green-500">Data saved</small>}
 
         <input
           type="file"
@@ -199,15 +199,13 @@ const Profile = () => {
         </button>
       </form>
       <div className="flex justify-between my-5">
-        <span className="text-red-700 cursor-pointer font-bold hover:opacity-70 p-2">
-          Delete Account
-        </span>
         <span
           className="text-red-700 cursor-pointer font-bold hover:opacity-70 p-2"
-          onClick={handleLogout}
+          onClick={handleDelete}
         >
-          Logout
+          Delete Account
         </span>
+        <Logout />
       </div>
     </div>
   );
