@@ -8,14 +8,11 @@ import {
 } from 'firebase/storage';
 import { app } from '../firebase';
 import {
-  deleteUserFailure,
-  deleteUserStart,
-  deleteUserSuccess,
   updateUserFailure,
   updateUserStart,
   updateUserSuccess,
 } from '../redux/UserSlice';
-import { Logout } from '../components';
+import { Delete, Logout } from '../components';
 
 const Profile = () => {
   const dispatch = useDispatch();
@@ -94,40 +91,19 @@ const Profile = () => {
         body: JSON.stringify(formData),
       });
 
-      const data = await response.json();
+      console.log(response);
+      if (response.status === 500) throw new Error(response.statusText);
+      const updateData = await response.json();
 
       if (!response.ok) {
-        dispatch(updateUserFailure(data.errors));
+        dispatch(updateUserFailure(updateData.errors));
         return;
       }
 
-      dispatch(updateUserSuccess(data.data[0]));
+      dispatch(updateUserSuccess(updateData.data[0]));
       setSuccess(true);
     } catch (err) {
       dispatch(updateUserFailure(err.message));
-    }
-  };
-
-  const handleDelete = async () => {
-    const apiUrl = '/api/users/current';
-
-    try {
-      dispatch(deleteUserStart());
-
-      const response = await fetch(apiUrl, {
-        method: 'DELETE',
-      });
-
-      const data = await response.json();
-
-      if (!response.ok) {
-        dispatch(deleteUserFailure(data.errors));
-        return;
-      }
-
-      dispatch(deleteUserSuccess(data));
-    } catch (err) {
-      dispatch(deleteUserFailure(err.message));
     }
   };
 
@@ -199,12 +175,7 @@ const Profile = () => {
         </button>
       </form>
       <div className="flex justify-between my-5">
-        <span
-          className="text-red-700 cursor-pointer font-bold hover:opacity-70 p-2"
-          onClick={handleDelete}
-        >
-          Delete Account
-        </span>
+        <Delete />
         <Logout />
       </div>
     </div>

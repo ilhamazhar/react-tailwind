@@ -25,15 +25,11 @@ const Users = () => {
         headers: headers,
       });
 
-      console.log('Response status code:', response);
+      if (response.status === 500) throw new Error(response.statusText);
 
       const userData = await response.json();
 
-      console.log(userData.data);
-
-      if (!response.ok) {
-        throw new Error(userData.errors);
-      }
+      if (!response.ok) throw new Error(userData.errors);
 
       setUsers(userData.data);
       setLoading(false);

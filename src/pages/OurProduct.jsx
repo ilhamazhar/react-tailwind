@@ -1,5 +1,11 @@
+import { CreateProperty } from '../components';
+
 const OurProduct = () => {
-  return <div>OurProduct</div>;
+  return (
+    <div>
+      <CreateProperty />
+    </div>
+  );
 };
 
 export default OurProduct;

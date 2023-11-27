@@ -1,10 +1,26 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 
 const Register = () => {
   const [formData, setFormData] = useState({});
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+  const [success, setSuccess] = useState(false);
+
+  useEffect(() => {
+    if (success) {
+      const timer = setTimeout(() => {
+        setSuccess(false);
+      }, 3500);
+      return () => clearTimeout(timer);
+    }
+    if (error) {
+      const timer = setTimeout(() => {
+        setError(false);
+      }, 3500);
+      return () => clearTimeout(timer);
+    }
+  }, [error, success]);
 
   const handleChange = (e) => {
     setFormData({
@@ -48,6 +64,7 @@ const Register = () => {
         registration
       </h1>
       {error && <small className="text-red-500">{error}</small>}
+      {success && <small className="text-green-500">Data saved</small>}
       <form
         className="flex flex-col gap-3 my-2"
         onSubmit={handleSubmit}

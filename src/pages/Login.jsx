@@ -44,14 +44,16 @@ const Login = () => {
         body: JSON.stringify(formData),
       });
 
-      const data = await response.json();
+      if (response.status === 500) throw new Error(response.statusText);
+
+      const loginData = await response.json();
 
       if (!response.ok) {
-        dispatch(loginFailure(data.errors));
+        dispatch(loginFailure(loginData.errors));
         return;
       }
 
-      dispatch(loginSuccess(data));
+      dispatch(loginSuccess(loginData));
       navigate('/');
     } catch (err) {
       dispatch(loginFailure(err.message));
